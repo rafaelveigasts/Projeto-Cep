@@ -1,6 +1,7 @@
 "use strict";
 const cep = document.getElementById("cep");
 
+
 const pesquisarCep = async() => { // declarar que é uma função assíncrona
   let cep = document.getElementById("cep");
   cep = cep.value; // o atributo value é o que ta digitado na caixinha
@@ -11,7 +12,20 @@ const pesquisarCep = async() => { // declarar que é uma função assíncrona
   const dados = await fetch(url) // pega os dados do fetch, com o await ele já me traz o retorno do response, sem ficar pendente
   const endereco = await dados.json() // aplica o método json, await no json pq json também é uma promessa
   
+  preencherFormulario(endereco);
 };
 
+const preencherFormulario = (endereco) => {
+  document.getElementById('endereço').value = endereco.logradouro;
+  document.getElementById('bairro').value = endereco.bairro;
+  document.getElementById('cidade').value = endereco.localidade;
+  document.getElementById('estado').value = endereco.uf;
+}
+/* Se atentar no padrão json que o site viacep fornece para
+colcoar as propriedades certas */
+
+
 cep.addEventListener("focusout", pesquisarCep);
+
 // https://developer.mozilla.org/pt-BR/docs/Web/API/Element/focusout_event
+// https://viacep.com.br/
