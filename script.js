@@ -1,7 +1,7 @@
 "use strict";
 const cep = document.getElementById("cep");
-const eNumero = (num) => /^[0-9]+$/.test;
 
+const eNumero = (num) => /^[0-9]+$/.test(num);
 const cepvalido = (cep) => cep.length ===8 && eNumero(cep); 
 /* dentro das expressões regulares o ^significa o início e o & o fim, ou seja, 
 tem que iniciar com número e terminar com número o + representa 1 ou + caracteres. 
@@ -10,6 +10,7 @@ O .test(cep) verifica no cep se todos os 8 dígitos são números do início ao 
 */
 
 const pesquisarCep = async() => { // declarar que é uma função assíncrona
+  limparFormulario();
   let cep = document.getElementById("cep");
   cep = cep.value; // o atributo value é o que ta digitado na caixinha
   const url = `http://viacep.com.br/ws/${cep}/json/`; //como o cep é dinâmico colocamos a variável dinâmica
@@ -31,6 +32,14 @@ const pesquisarCep = async() => { // declarar que é uma função assíncrona
 }else {
   document.getElementById('endereço').value = 'CEP não encontrado';
 }};
+
+
+const limparFormulario = () => {
+  document.getElementById('endereço').value = '';
+  document.getElementById('bairro').value = '';
+  document.getElementById('cidade').value = '';
+  document.getElementById('estado').value = '';
+}
 
 const preencherFormulario = (endereco) => {
   document.getElementById('endereço').value = endereco.logradouro;
