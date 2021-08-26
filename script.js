@@ -1,6 +1,11 @@
 "use strict";
 const cep = document.getElementById("cep");
-
+const cepvalido = (cep) => cep.length ===8 && /^[0-9]+$.test(cep)/; 
+/* dentro das expressões regulares o ^significa o início e o & o fim, ou seja, 
+tem que iniciar com número e terminar com número o + representa 1 ou + caracteres. 
+No geral: 8 caracteres numéricos de 0-9.
+O .test(cep) verifica no cep se todos os 8 dígitos são números do início ao fim
+*/
 
 const pesquisarCep = async() => { // declarar que é uma função assíncrona
   let cep = document.getElementById("cep");
@@ -9,6 +14,9 @@ const pesquisarCep = async() => { // declarar que é uma função assíncrona
   // fetch(url).then(response => response.json().then(console.log)) 
   /*fetch retorna uma promessa (response), coisa que pode ou não acontecer, ou seja, um retorno assíncrono. 
   O json também volta uma promessa, então temos que usar outro then nele. Faça um console.log dentro do then final para ver o resultado*/
+
+  /* enviar ao fetch somente cep's validos, nada de letras*/
+  if (cepvalido(cep)){
   const dados = await fetch(url) // pega os dados do fetch, com o await ele já me traz o retorno do response, sem ficar pendente
   const endereco = await dados.json() // aplica o método json, await no json pq json também é uma promessa
   
@@ -18,7 +26,9 @@ const pesquisarCep = async() => { // declarar que é uma função assíncrona
     preencherFormulario(endereco);
   }
 //https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Object/HasOwnProperty
-};
+}else {
+  document.getElementById('endereço').value = 'CEP não encontrado';
+}};
 
 const preencherFormulario = (endereco) => {
   document.getElementById('endereço').value = endereco.logradouro;
