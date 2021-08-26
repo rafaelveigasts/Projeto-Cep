@@ -1,6 +1,8 @@
 "use strict";
 const cep = document.getElementById("cep");
-const cepvalido = (cep) => cep.length ===8 && /^[0-9]+$.test(cep)/; 
+const eNumero = (num) => /^[0-9]+$/.test;
+
+const cepvalido = (cep) => cep.length ===8 && eNumero(cep); 
 /* dentro das expressões regulares o ^significa o início e o & o fim, ou seja, 
 tem que iniciar com número e terminar com número o + representa 1 ou + caracteres. 
 No geral: 8 caracteres numéricos de 0-9.
