@@ -12,7 +12,12 @@ const pesquisarCep = async() => { // declarar que é uma função assíncrona
   const dados = await fetch(url) // pega os dados do fetch, com o await ele já me traz o retorno do response, sem ficar pendente
   const endereco = await dados.json() // aplica o método json, await no json pq json também é uma promessa
   
-  preencherFormulario(endereco);
+  if (endereco.hasOwnProperty('erro')){  // caso o cep não seja encontrado, colcoar um cep errado e ver no console.log
+    document.getElementById('endereço').value = 'CEP não encontrado';
+  } else {
+    preencherFormulario(endereco);
+  }
+//https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Object/HasOwnProperty
 };
 
 const preencherFormulario = (endereco) => {
