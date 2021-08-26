@@ -1,14 +1,42 @@
 "use strict";
 const cep = document.getElementById("cep");
 
-const pesquisarCep = () => {
+const eNumero = (num) => /^[0-9]+$/.test(num);
+const cepvalido = (cep) => cep.length ===8 && eNumero(cep); 
+
+const pesquisarCep = async() => { 
+  limparFormulario();
   let cep = document.getElementById("cep");
-  cep = cep.value; // o atributo value é o que ta digitado na caixinha
-  const url = `https://viacep.com.br/ws/${cep}/json/`; //como o cep é dinâmico colocamos a variável dinâmica
-  fetch(url).then(response => response.json().then(console.log)) 
-  /*fetch retorna uma promessa (response), coisa que pode ou não acontecer, ou seja, um retorno assíncrono. 
-  O json também volta uma promessa, então temos que usar outro then nele. Faça um console.log dentro do then final para ver o resultado*/
-};
+  cep = cep.value; 
+  const url = `http://viacep.com.br/ws/${cep}/json/`;
+
+  if (cepvalido(cep)){
+  const dados = await fetch(url) 
+  const endereco = await dados.json() 
+  
+  if (endereco.hasOwnProperty('erro')){  
+    document.getElementById('endereço').value = 'CEP não encontrado';
+  } else {
+    preencherFormulario(endereco);
+  }
+}else {
+  document.getElementById('endereço').value = 'CEP não encontrado';
+}};
+
+
+const limparFormulario = () => {
+  document.getElementById('endereço').value = '';
+  document.getElementById('bairro').value = '';
+  document.getElementById('cidade').value = '';
+  document.getElementById('estado').value = '';
+}
+
+const preencherFormulario = (endereco) => {
+  document.getElementById('endereço').value = endereco.logradouro;
+  document.getElementById('bairro').value = endereco.bairro;
+  document.getElementById('cidade').value = endereco.localidade;
+  document.getElementById('estado').value = endereco.uf;
+}
+
 
 cep.addEventListener("focusout", pesquisarCep);
-// https://developer.mozilla.org/pt-BR/docs/Web/API/Element/focusout_event
